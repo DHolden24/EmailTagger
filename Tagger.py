@@ -7,6 +7,8 @@ import time
 
 pipeline_save_file = "TaggerSave/Tagger"
 email = "INSERT_EMAIL_HERE"
+test_flag = False
+tune_flag = False
 
 if __name__ == "__main__":
     outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
@@ -27,26 +29,30 @@ if __name__ == "__main__":
         count = 0
         for item in inbox.Items:
             if item.Categories != "":
-                #training_docs.append(Cleaner.clean_string(item.Body))
-                #training_tags.append(item.Categories)
-                if count % 5 != 0:
-                    training_docs.append(Cleaner.clean_string(item.Body))
-                    training_tags.append(item.Categories)
-                else:
+                
+                # If the algorithm is being tested, take 20% of the tagged emails and use them as a test set
+                if test_flag and count % 5 == 0:
                     testing_docs.append(Cleaner.clean_string(item.Body))
                     testing_tags.append(item.Categories)
+                 else:
+                    training_docs.append(Cleaner.clean_string(item.Body))
+                    training_tags.append(item.Categories)
                 count += 1
 
         tags = list(set(training_tags + testing_tags))
         for i in range(len(training_tags)):
             training_tags[i] = tags.index(training_tags[i])
-        for i in range(len(testing_tags)):
-            testing_tags[i] = tags.index(testing_tags[i])
+        if test_flag:
+            for i in range(len(testing_tags)):
+                testing_tags[i] = tags.index(testing_tags[i])
 
-        # Algorithm.tune_classifier(pipeline, training_docs, training_tags)
+        # Tune the classifier if indicated
+        if tune_flag:
+            Algorithm.tune_classifier(pipeline, training_docs, training_tags)
 
         pipeline = Algorithm.train(pipeline=pipeline, train_data=training_docs, train_target=training_tags,
-                                   test_data=testing_docs, test_target=testing_tags)
+                                   test_data=testing_docs if test_flag else None, 
+                                   test_target=testing_tags if test_flag else None)
 
         file = open(pipeline_save_file, 'ab')
         pickle.dump((pipeline, tags), file)
