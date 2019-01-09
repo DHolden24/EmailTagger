@@ -15,7 +15,7 @@ except LookupError:
 char_exclusions = set(string.punctuation)
 lemmatizer = WordNetLemmatizer()
 
-def clean_string(doc_string):
+def clean_string(doc_string: str = ""):
     ''' Take a string and return it after its lemmatized with punctuation and stopwords removed
     
     Key Word Arguments:
