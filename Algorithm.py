@@ -23,12 +23,11 @@ def train(pipeline, train_data, train_target, test_data=None, test_target=None):
     """
     pipeline = pipeline.fit(train_data, train_target)
 
-    if not test_data and test_target:
-        return pipeline
-
-    predicted_tags = pipeline.predict(test_data)
-    import numpy as np
-    print(np.mean(predicted_tags == test_target))
+    # If testing, predict the test outputs and print the resulting accuracy
+    if test_data and test_target:
+        predicted_tags = pipeline.predict(test_data)
+        import numpy as np
+        print(np.mean(predicted_tags == test_target))
 
     return pipeline
 
