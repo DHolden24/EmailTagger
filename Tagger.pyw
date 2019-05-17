@@ -6,12 +6,14 @@ import pickle
 import time
 
 pipeline_save_file = "TaggerSave/Tagger"
-email = "ENTER_EMAIL_HERE"
 test_flag = False
 tune_flag = False
 classify_old = True
 
 if __name__ == "__main__":
+    f = open("Email.txt", "r")
+    email = f.readline()
+
     # Open an outlook instance and the inbox
     outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
     inbox = outlook.Folders(email).Folders("Inbox")
