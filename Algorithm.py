@@ -38,8 +38,8 @@ def tune_classifier(pipeline, train_data, train_target):
 
     # Initialize the list of parameters
     parameters = {'vectorizer__ngram_range': [(1, 1), (1, 2), (1, 3)],
-                  'vectorizer__max_df': [0.5, 0.65, 0.75, 0.85, 1.0],
-                  'vectorizer__min_df': [0.0, 0.15, 0.25, 0.45],
+                  'vectorizer__max_df': [0.65, 0.75, 0.85, 1.0],
+                  'vectorizer__min_df': [0.0, 0.15, 0.25],
                   'transformer__use_idf': (True, False),
                   'transformer__smooth_idf': (True, False),
                   'transformer__sublinear_tf': (True, False),
@@ -47,8 +47,7 @@ def tune_classifier(pipeline, train_data, train_target):
                   'classifier__fit_prior': (True, False),}
     
     # Tune the pipeline using a grid search
-    print("tuning")
-    tuner = GridSearchCV(pipeline, parameters, n_jobs=1)
+    tuner = GridSearchCV(pipeline, parameters, n_jobs=3)
     tuner = tuner.fit(train_data, train_target)
 
     # Write the results to a txt file

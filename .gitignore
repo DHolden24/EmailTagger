@@ -45,3 +45,10 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+TaggerSave/Tagger
+__pycache__/Algorithm.cpython-35.pyc
+*.pyc
+RunTagger.bat
+*.xml
+.idea/EmailTagger.iml
+*.pyc
