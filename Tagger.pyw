@@ -13,7 +13,7 @@ classify_old = True
 
 if __name__ == "__main__":
     with open("Email.txt", "r") as f:
-        email = f.readline() + "a"
+        email = f.readline()
 
     # Open an outlook instance and the inbox
     attempts = 0
@@ -26,6 +26,7 @@ if __name__ == "__main__":
         except Exception as e:
             time.sleep(5)
             attempts += 1
+            
     if inbox is None:
         sys.exit(1)
 
