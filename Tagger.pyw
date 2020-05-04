@@ -4,6 +4,7 @@ import Cleaner
 import os
 import pickle
 import time
+import sys
 
 pipeline_save_file = "TaggerSave/Tagger"
 test_flag = False
@@ -11,12 +12,22 @@ tune_flag = False
 classify_old = True
 
 if __name__ == "__main__":
-    f = open("Email.txt", "r")
-    email = f.readline()
+    with open("Email.txt", "r") as f:
+        email = f.readline() + "a"
 
     # Open an outlook instance and the inbox
-    outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
-    inbox = outlook.Folders(email).Folders("Inbox")
+    attempts = 0
+    inbox = None
+    while attempts < 200:
+        try:
+            outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
+            inbox = outlook.Folders(email).Folders("Inbox")
+            break
+        except Exception as e:
+            time.sleep(5)
+            attempts += 1
+    if inbox is None:
+        sys.exit(1)
 
     # If a previously created pipeline is saved, load it
     if os.path.isfile(pipeline_save_file):
