@@ -1,6 +1,6 @@
 certifi==2020.4.5.1
 click==7.1.2
-joblib==0.14.1
+joblib==1.2.0
 nltk==3.5
 numpy==1.18.4
 pywin32==227
